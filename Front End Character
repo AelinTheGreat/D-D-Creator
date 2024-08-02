@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Character</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-800 text-white">
+    <div class="container mx-auto">
+        <h1 class="text-4xl font-bold text-center my-10">Create a New Character</h1>
+        <form id="character-form" class="bg-gray-700 p-6 rounded-lg shadow-lg">
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-gray-300">Name</label>
+                <input type="text" id="name" name="name" class="mt-1 p-2 block w-full bg-gray-900 border border-gray-600 rounded-md">
+            </div>
+            <div class="mb-4">
+                <label for="race" class="block text-sm font-medium text-gray-300">Race</label>
+                <input type="text" id="race" name="race" class="mt-1 p-2 block w-full bg-gray-900 border border-gray-600 rounded-md">
+            </div>
+            <div class="mb-4">
+                <label for="class" class="block text-sm font-medium text-gray-300">Class</label>
+                <input type="text" id="class" name="class" class="mt-1 p-2 block w-full bg-gray-900 border border-gray-600 rounded-md">
+            </div>
+            <div class="mb-4">
+                <label for="stats" class="block text-sm font-medium text-gray-300">Stats</label>
+                <input type="text" id="stats" name="stats" class="mt-1 p-2 block w-full bg-gray-900 border border-gray-600 rounded-md">
+            </div>
+            <div class="mb-4">
+                <label for="equipment" class="block text-sm font-medium text-gray-300">Equipment</label>
+                <input type="text" id="equipment" name="equipment" class="mt-1 p-2 block w-full bg-gray-900 border border-gray-600 rounded-md">
+            </div>
+            <div class="mb-4">
+                <label for="backstory" class="block text-sm font-medium text-gray-300">Backstory</label>
+                <textarea id="backstory" name="backstory" class="mt-1 p-2 block w-full bg-gray-900 border border-gray-600 rounded-md"></textarea>
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create Character</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById('character-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            const response = await fetch('/api/characters', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+            if (response.ok) {
+                alert('Character created successfully!');
+            } else {
+                alert('Error creating character');
+            }
+        });
+    </script>
+</body>
+</html>
