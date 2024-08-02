@@ -1,0 +1,38 @@
+const express = require('express');
+const fs = require('fs');
+const bodyParser = require('body-parser');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(bodyParser.json());
+
+const readData = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
+const writeData = (file, data) => fs.writeFileSync(file, JSON.stringify(data, null, 2));
+
+app.post('/api/characters', (req, res) => {
+    const characters = readData('characters.json');
+    characters.push(req.body);
+    writeData('characters.json', characters);
+    res.status(201).send('Character created');
+});
+
+app.get('/api/characters', (req, res) => {
+    const characters = readData('characters.json');
+    res.json(characters);
+});
+
+app.post('/api/campaigns', (req, res) => {
+    const campaigns = readData('campaigns.json');
+    campaigns.push(req.body);
+    writeData('campaigns.json', campaigns);
+    res.status(201).send('Campaign created');
+});
+
+app.get('/api/campaigns', (req, res) => {
+    const campaigns = readData('campaigns.json');
+    res.json(campaigns);
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
